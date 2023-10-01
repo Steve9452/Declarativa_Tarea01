@@ -12,34 +12,40 @@ import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.IdentifyGraphicsOverlayResult;
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 
-import java.util.Arrays;
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 
-public class MapComponent {
-    private final MapView mapView;
+public class MainController implements Initializable {
 
-    String yourApiKey;
+    @FXML
+    private Label welcomeText;
 
+    @FXML
+    private StackPane stackPane;
 
+    @FXML
+    private MapView mapView;
 
-    public MapComponent() {
-        this.yourApiKey = "AAPKd876ee59fbb34ced8ed04010d4e388280v8F2OkcRm7uz0iAli7igh_2G8sC_voPnmf9zZP9Y5LTf0nyny4rv7Jsmi2qG3Ho";
-        this.mapView = new MapView();
-        setMap();
-    }
+    private GraphicsOverlay graphicsOverlay;
 
+    MapComponent map = new MapComponent();
+    // points
+    private List<Point> points;
 
-    public void setMap() {
-        ArcGISRuntimeEnvironment.setApiKey(yourApiKey);
-        ArcGISMap map = new ArcGISMap(BasemapStyle.ARCGIS_NAVIGATION);
-        Viewpoint viewpoint = new Viewpoint(13.7013, -89.2244, 10000);
-        map.setInitialViewpoint(viewpoint);
-        mapView.setMap(map);
-    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
 
-    public MapView getMapView() {
-        return mapView;
+        mapView.setMap(MapSettings.mapInit());
+        loadPoints();
+
     }
 
     public void loadPoints(){
@@ -64,14 +70,10 @@ public class MapComponent {
         graphic3.getAttributes().put("title", "Punto 2");
 
         // Adding graphic to the graphics overlay
-        GraphicsOverlay graphicsOverlay = new GraphicsOverlay();
-//        graphicsOverlay.getGraphics().add(graphic2);
-//        graphicsOverlay.getGraphics().add(graphic);
-//        graphicsOverlay.getGraphics().add(graphic3);
+
+        graphicsOverlay = new GraphicsOverlay();
 
         graphicsOverlay.getGraphics().addAll(Arrays.asList(graphic, graphic2, graphic3));
-
-
 
 
 
@@ -79,18 +81,15 @@ public class MapComponent {
         mapView.getGraphicsOverlays().add(graphicsOverlay);
 
         setPointsEventListener(graphicsOverlay);
-
     }
 
 
-    public void clearPointsSelection(){
-        mapView.getGraphicsOverlays().forEach( graphicsOverlay -> {
-            graphicsOverlay.getGraphics().forEach( graphic -> {
-                graphic.setSelected(false);
-            });
-        });
+    @FXML
+    protected void onHelloButtonClick() {
+        //loadPoints();
+        clearPointsSelection();
+        welcomeText.setText("Welcome to JavaFX Application!");
     }
-
 
     public void setPointsEventListener(GraphicsOverlay graphicsOverlay){
         // Display point coords on click
@@ -135,6 +134,13 @@ public class MapComponent {
         });
     }
 
+    public void clearPointsSelection(){
+        mapView.getGraphicsOverlays().forEach( graphicsOverlay -> {
+            graphicsOverlay.getGraphics().forEach( graphic -> {
+                graphic.setSelected(false);
+            });
+        });
+    }
 
 
 }
