@@ -3,6 +3,7 @@ package com.example.tarea1declarativa;
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.Polyline;
 import com.esri.arcgisruntime.geometry.SpatialReferences;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.BasemapStyle;
@@ -11,7 +12,9 @@ import com.esri.arcgisruntime.mapping.view.Graphic;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.IdentifyGraphicsOverlayResult;
 import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
 import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
+import com.esri.arcgisruntime.tasks.networkanalysis.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -22,6 +25,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
@@ -45,6 +49,8 @@ public class MainController implements Initializable {
 
         mapView.setMap(MapSettings.mapInit());
         loadPoints();
+
+
 
     }
 
@@ -89,6 +95,7 @@ public class MainController implements Initializable {
         //loadPoints();
         clearPointsSelection();
         welcomeText.setText("Welcome to JavaFX Application!");
+        setOneRoute();
     }
 
     public void setPointsEventListener(GraphicsOverlay graphicsOverlay){
@@ -140,6 +147,60 @@ public class MainController implements Initializable {
                 graphic.setSelected(false);
             });
         });
+    }
+
+
+    public void setOneRoute(){
+       RouteTask routeTask = new RouteTask("https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World");
+
+//       RouteParameters routeParameters = new RouteParameters();
+       // creating two stops examples
+
+            Stop stop1 = new Stop(new Point(-89.2244, 13.7013, SpatialReferences.getWgs84()));
+            Stop stop2 = new Stop(new Point(-89.2254, 13.7013, SpatialReferences.getWgs84()));
+
+            List<Stop> stops = new ArrayList<>();
+            stops.add(stop1);
+            stops.add(stop2);
+
+//            routeParameters.setStops(stops);
+//            routeParameters.setReturnDirections(true);
+//            routeParameters.setReturnStops(true);
+//            routeParameters.setReturnRoutes(true);
+
+        ListenableFuture<RouteParameters> routeParametersFuture = routeTask.createDefaultParametersAsync();
+
+
+        routeParametersFuture.addDoneListener(() -> {
+            try {
+                RouteParameters routeParameters = routeParametersFuture.get();
+                routeParameters.setStops(stops);
+
+                routeParameters.setReturnDirections(true);
+                routeParameters.setDirectionsLanguage("es");
+
+                ListenableFuture<RouteResult> routeResultFuture = routeTask.solveRouteAsync(routeParameters);
+
+                routeResultFuture.addDoneListener(() -> {
+                    try {
+                        RouteResult routeResult = routeResultFuture.get();
+                        Route route = routeResult.getRoutes().get(0);
+
+
+                        SimpleLineSymbol routeSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, 0xFF800080, 5);
+                        Graphic routeGraphic = new Graphic(route.getRouteGeometry(), routeSymbol);
+                        //routeGraphic.setGeometry(route.getRouteGeometry());
+
+                        graphicsOverlay.getGraphics().add(routeGraphic);
+
+
+                        route.getDirectionManeuvers().forEach(step -> System.out.println(step.getDirectionText()));
+                    } catch (Exception e) { e.printStackTrace(); }
+                });
+            } catch (Exception e) { e.printStackTrace(); }
+        });
+
+
     }
 
 

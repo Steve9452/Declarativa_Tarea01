@@ -26,7 +26,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 320, 1040);
         stage.setTitle("Declarativa 01");
         stage.setScene(scene);
         stage.setMaximized(true);
