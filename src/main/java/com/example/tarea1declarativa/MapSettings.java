@@ -12,6 +12,4 @@ public class MapSettings {
         map.setInitialViewpoint(viewpoint);
         return map;
     }
-
-
 }

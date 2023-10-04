@@ -13,6 +13,7 @@ import com.esri.arcgisruntime.tasks.networkanalysis.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
@@ -32,23 +33,35 @@ public class MainController implements Initializable {
 
     private GraphicsOverlay graphicsOverlay;
 
-    // points
-    private final List<Stop> stops = new ArrayList<>();
+    @FXML
+    private Button helloButton;
+
+    @FXML
+    private Button clearButton;
+    // Stops -> point
+    private List<Stop> stops = new ArrayList<>();
+    // from event handler
+    private final List<Integer> selectedPointsId = new ArrayList<>();
+
+    // points -> prologController
+    private final List<Point> points = new ArrayList<>();
+
+    PrologController prolog = new PrologController();
+
+    private Graphic routeGraphicAux;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         mapView.setMap(MapSettings.mapInit());
         loadPoints();
-
-
-
     }
 
     public void loadPoints(){
-        Point point = new Point(-89.2244, 13.7013, SpatialReferences.getWgs84());
-        Point point2 = new Point(-89.2254, 13.7013, SpatialReferences.getWgs84());
-        Point point3 = new Point(-89.2264, 13.7013, SpatialReferences.getWgs84());
+        Point point = new Point(-89.224267304412422, 13.703150717800634, SpatialReferences.getWgs84());
+        Point point2 = new Point(-89.227109209527967, 13.703067050713086, SpatialReferences.getWgs84());
+        Point point3 = new Point(-89.228896165017289, 13.702962466811764, SpatialReferences.getWgs84());
 
         // Creating a graphic with point and symbol
         SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.CIRCLE, 0xFFFF0000, 10);
@@ -58,9 +71,9 @@ public class MainController implements Initializable {
         Graphic graphic3 = new Graphic(point3, symbol);
 
         // Add a point with an id attribute
-        graphic.getAttributes().put("id", 0);
-        graphic2.getAttributes().put("id", 1);
-        graphic3.getAttributes().put("id", 2);
+        graphic.getAttributes().put("id", 1);
+        graphic2.getAttributes().put("id", 2);
+        graphic3.getAttributes().put("id", 3);
 
         graphic.getAttributes().put("title", "Punto 0");
         graphic2.getAttributes().put("title", "Punto 1");
@@ -84,21 +97,44 @@ public class MainController implements Initializable {
     @FXML
     protected void onHelloButtonClick() {
         //loadPoints();
-        clearPointsSelection();
-        welcomeText.setText("Welcome to JavaFX Application!");
-        setOneRoute();
-
-        PrologController prolog = new PrologController();
-
+        welcomeText.setText("Ruta generada con éxito");
+        //setOneRoute();
+        welcomeText.setText(selectedPointsId.get(0).toString() + selectedPointsId.get(1).toString());
+        handleRoute(selectedPointsId.get(0),selectedPointsId.get(1));
 
     }
 
+    @FXML
+    protected void onClearButtonClick(){
+        resetRoute();
+    }
+    private void handleRoute(int from, int to){
+        prolog.populateStopsId(from ,to);
+        prolog.populateIntersections();
+
+        for ( Map.Entry<Integer,Intersection> entry : prolog.getIntersections().entrySet()){
+            stops.add( new Stop( interceptionToPoint(entry.getValue())));
+        }
+        displayRoute();
+        //System.out.println(stops);
+    }
+
+
+
+    private Point interceptionToPoint(Intersection i){
+        return new Point( i.getLat(), i.getLon(), SpatialReferences.getWgs84()  );
+    }
+    private List<Stop> getStops(List<Point> points){
+        List<Stop> _stops = new ArrayList<>();
+        for (Point point : points) {
+            _stops.add(new Stop(point));
+        }
+        return _stops;
+    }
     public void setPointsEventListener(GraphicsOverlay graphicsOverlay){
         // Display point coords on click
         mapView.setOnMouseClicked(e -> {
-
             Point mapPoint = mapView.screenToLocation( new javafx.geometry.Point2D(e.getX(), e.getY()));
-
 
             double x = e.getX();
             double y = e.getY();
@@ -113,10 +149,29 @@ public class MainController implements Initializable {
                             IdentifyGraphicsOverlayResult identifyGraphicsOverlayResult = identifyResultFuture.get();
                             if (!identifyGraphicsOverlayResult.getGraphics().isEmpty()) {
 
-                                clearPointsSelection();
-
                                 Graphic identifiedGraphic = identifyGraphicsOverlayResult.getGraphics().get(0);
-                                identifiedGraphic.setSelected(true);
+
+
+                                // Add selected point to selectedPointList
+//                                if(selectedPointsId.isEmpty()){
+//                                    helloButton.setDisable(false);
+//                                    clearButton.setDisable(false);
+//                                }
+
+                                if(selectedPointsId.contains( (int) identifiedGraphic.getAttributes().get("id")))
+                                    return;
+
+
+                                if(selectedPointsId.size() < 2 ){
+                                    identifiedGraphic.setSelected(true);
+                                    selectedPointsId.add((int) identifiedGraphic.getAttributes().get("id"));
+                                }
+                                else{
+                                    clearPointsSelection();
+                                    selectedPointsId.clear();
+                                    identifiedGraphic.setSelected(true);
+                                    selectedPointsId.add((int) identifiedGraphic.getAttributes().get("id"));
+                                }
 
                                 System.out.println(identifiedGraphic.getAttributes());
                                 System.out.println("Identified graphic: " + identifiedGraphic.getAttributes().get("id"));
@@ -142,24 +197,22 @@ public class MainController implements Initializable {
                 graphic.setSelected(false);
             });
         });
+        helloButton.setDisable(true);
     }
 
-
-
-
-    public void setOneRoute(){
+    public void displayRoute(){
        RouteTask routeTask = new RouteTask("https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World");
 
 //       RouteParameters routeParameters = new RouteParameters();
        // creating two stops examples
 
-            Stop stop1 = new Stop(new Point(-89.2244, 13.7013, SpatialReferences.getWgs84()));
-            Stop stop2 = new Stop(new Point(-89.2254, 13.7013, SpatialReferences.getWgs84()));
-            Stop stop3 = new Stop(new Point(-89.2264, 13.7013, SpatialReferences.getWgs84()));
-
-            stops.add(stop1);
-            stops.add(stop2);
-            stops.add(stop3);
+//            Stop stop1 = new Stop(new Point(-89.2244, 13.7013, SpatialReferences.getWgs84()));
+//            Stop stop2 = new Stop(new Point(-89.2254, 13.7013, SpatialReferences.getWgs84()));
+//            Stop stop3 = new Stop(new Point(-89.2264, 13.7013, SpatialReferences.getWgs84()));
+//
+//            stops.add(stop1);
+//            stops.add(stop2);
+//            stops.add(stop3);
 
 //            routeParameters.setStops(stops);
 //            routeParameters.setReturnDirections(true);
@@ -188,7 +241,8 @@ public class MainController implements Initializable {
                         SimpleLineSymbol routeSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, 0xFF800080, 5);
                         Graphic routeGraphic = new Graphic(route.getRouteGeometry(), routeSymbol);
                         //routeGraphic.setGeometry(route.getRouteGeometry());
-
+                        routeGraphic.getAttributes().put("id", "Ruta");
+                        routeGraphicAux = routeGraphic;
                         graphicsOverlay.getGraphics().add(routeGraphic);
 
 
@@ -197,9 +251,15 @@ public class MainController implements Initializable {
                 });
             } catch (Exception e) { e.printStackTrace(); }
         });
-
-
     }
 
+    public void resetRoute(){
+        clearPointsSelection();
+        selectedPointsId.clear();
+        stops.clear();
+        // clear route
+        graphicsOverlay.getGraphics().remove( routeGraphicAux );
+        clearButton.setDisable(true);
 
+    }
 }

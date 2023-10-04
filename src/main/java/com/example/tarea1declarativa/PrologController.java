@@ -12,23 +12,21 @@ import java.util.Map;
 import com.example.tarea1declarativa.Intersection;
 
 public class PrologController {
-
-
     private final String consult = "consult('src/main/java/com/example/tarea1declarativa/navigation.pl')";
-
     private final Query q1 = new Query(consult);
+    List<Integer> stopsId;
+    private final HashMap<Integer, Intersection> intersections = new HashMap<>();
 
-    List<Integer> stops;
 
-    private final Map<Integer, Intersection> intersections = new HashMap<>();
-
-    public PrologController() {
-        this.populateStopsId();
-        this.populateIntersections();
+    public List<Integer> getStops() {
+        return stopsId;
     }
 
+    public HashMap<Integer, Intersection> getIntersections() {
+        return intersections;
+    }
 
-    private void populateStopsId(){
+    public void populateStopsId(int from, int to ){
 
         if(!q1.hasSolution()){
             System.out.println("Error al consultar");
@@ -36,7 +34,8 @@ public class PrologController {
         }
 
         // route(1,4,Ruta).
-        String route = "route(1,4,Ruta).";
+        //String route = "route(1,4,Ruta).";
+        String route = "route("+from+","+to+",Ruta).";
         Query query = new Query(route);
 
         // Saving onSolution into list
@@ -47,32 +46,29 @@ public class PrologController {
                 .split(",\\s*");
 
         // Inserting into list
-        this.stops = Arrays.stream(pointsId).map(Integer::parseInt).toList();
+        this.stopsId = Arrays.stream(pointsId).map(Integer::parseInt).toList();
 
     }
 
-    private void populateIntersections() {
+    public void populateIntersections() {
         if (!q1.hasSolution()) {
             System.out.println("Error al consultar");
             return;
         }
+        intersections.clear();
 
-        stops.forEach( (id) -> {
+        stopsId.forEach( (id) -> {
             String route = "coordenada(" + id + ",Lat,Lng).";
             Query query = new Query(route);
-            int lat = Integer.parseInt(query.oneSolution().get("Lat").toString());
-            int lng = Integer.parseInt(query.oneSolution().get("Lng").toString());
+            double lat = Double.parseDouble(query.oneSolution().get("Lat").toString());
+            double lng = Double.parseDouble(query.oneSolution().get("Lng").toString());
             Intersection intersection = new Intersection(id, lat, lng);
             intersections.put(id, intersection);
         });
 
+//        for (Map.Entry<Integer, Intersection> entry : intersections.entrySet()) {
+//            System.out.println(entry.getKey() + " " + entry.getValue().getLat() + " " + entry.getValue().getLon());
+//        }
+    }
 
-    }
-    public List<Integer> getStops() {
-        return stops;
-    }
-
-    public Map<Integer, Intersection> getIntersections() {
-        return intersections;
-    }
 }
