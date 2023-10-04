@@ -1,13 +1,8 @@
 package com.example.tarea1declarativa;
 
-import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.geometry.Point;
-import com.esri.arcgisruntime.geometry.Polyline;
 import com.esri.arcgisruntime.geometry.SpatialReferences;
-import com.esri.arcgisruntime.mapping.ArcGISMap;
-import com.esri.arcgisruntime.mapping.BasemapStyle;
-import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.mapping.view.Graphic;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.IdentifyGraphicsOverlayResult;
@@ -21,11 +16,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
@@ -40,9 +32,8 @@ public class MainController implements Initializable {
 
     private GraphicsOverlay graphicsOverlay;
 
-    MapComponent map = new MapComponent();
     // points
-    private List<Point> points;
+    private final List<Stop> stops = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,6 +87,10 @@ public class MainController implements Initializable {
         clearPointsSelection();
         welcomeText.setText("Welcome to JavaFX Application!");
         setOneRoute();
+
+        PrologController prolog = new PrologController();
+
+
     }
 
     public void setPointsEventListener(GraphicsOverlay graphicsOverlay){
@@ -150,6 +145,8 @@ public class MainController implements Initializable {
     }
 
 
+
+
     public void setOneRoute(){
        RouteTask routeTask = new RouteTask("https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World");
 
@@ -158,10 +155,11 @@ public class MainController implements Initializable {
 
             Stop stop1 = new Stop(new Point(-89.2244, 13.7013, SpatialReferences.getWgs84()));
             Stop stop2 = new Stop(new Point(-89.2254, 13.7013, SpatialReferences.getWgs84()));
+            Stop stop3 = new Stop(new Point(-89.2264, 13.7013, SpatialReferences.getWgs84()));
 
-            List<Stop> stops = new ArrayList<>();
             stops.add(stop1);
             stops.add(stop2);
+            stops.add(stop3);
 
 //            routeParameters.setStops(stops);
 //            routeParameters.setReturnDirections(true);
