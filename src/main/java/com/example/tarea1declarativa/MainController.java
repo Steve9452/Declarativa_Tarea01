@@ -36,8 +36,6 @@ public class MainController implements Initializable {
     @FXML
     private Button helloButton;
 
-    @FXML
-    private Button clearButton;
     // Stops -> point
     private List<Stop> stops = new ArrayList<>();
     // from event handler
@@ -96,17 +94,20 @@ public class MainController implements Initializable {
 
     @FXML
     protected void onHelloButtonClick() {
-        //loadPoints();
-        welcomeText.setText("Ruta generada con éxito");
+
         //setOneRoute();
-        welcomeText.setText(selectedPointsId.get(0).toString() + selectedPointsId.get(1).toString());
+        welcomeText.setText("Calculando ruta desde " +  selectedPointsId.get(0).toString() + " a " + selectedPointsId.get(1).toString());
         handleRoute(selectedPointsId.get(0),selectedPointsId.get(1));
+        helloButton.setDisable(true);
+        // clear
+        selectedPointsId.clear();
 
     }
 
     @FXML
     protected void onClearButtonClick(){
         resetRoute();
+        welcomeText.setText("Selecciona dos puntos para calcular la ruta");
     }
     private void handleRoute(int from, int to){
         prolog.populateStopsId(from ,to);
@@ -153,12 +154,10 @@ public class MainController implements Initializable {
 
 
                                 // Add selected point to selectedPointList
-//                                if(selectedPointsId.isEmpty()){
-//                                    helloButton.setDisable(false);
-//                                    clearButton.setDisable(false);
-//                                }
 
-                                if(selectedPointsId.contains( (int) identifiedGraphic.getAttributes().get("id")))
+
+
+                                if( identifiedGraphic.getAttributes().get("id") == "Ruta" ||  selectedPointsId.contains( (int) identifiedGraphic.getAttributes().get("id")))
                                     return;
 
 
@@ -182,6 +181,15 @@ public class MainController implements Initializable {
                                 mapView.getCallout().setDetail(identifiedGraphic.getAttributes().get("title").toString() + "\n" + "Detalles");
 
                                 mapView.getCallout().showCalloutAt(identifiedGraphic, mapView.screenToLocation(point2D));
+
+                                if (selectedPointsId.size() == 2){
+                                    helloButton.setDisable(false);
+                                    //clearButton.setDisable(false);
+                                }
+                                else{
+                                    helloButton.setDisable(true);
+                                    //clearButton.setDisable(true);
+                                }
                             }
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -259,7 +267,7 @@ public class MainController implements Initializable {
         stops.clear();
         // clear route
         graphicsOverlay.getGraphics().remove( routeGraphicAux );
-        clearButton.setDisable(true);
+        //clearButton.setDisable(true);
 
     }
 }
