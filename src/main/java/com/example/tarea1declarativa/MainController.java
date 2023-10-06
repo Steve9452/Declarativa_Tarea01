@@ -57,31 +57,33 @@ public class MainController implements Initializable {
     }
 
     public void loadPoints(){
-        Point point = new Point(-89.224267304412422, 13.703150717800634, SpatialReferences.getWgs84());
-        Point point2 = new Point(-89.227109209527967, 13.703067050713086, SpatialReferences.getWgs84());
-        Point point3 = new Point(-89.228896165017289, 13.702962466811764, SpatialReferences.getWgs84());
+//        Point point = new Point(-89.224267304412422, 13.703150717800634, SpatialReferences.getWgs84());
+//        Point point2 = new Point(-89.227109209527967, 13.703067050713086, SpatialReferences.getWgs84());
+//        Point point3 = new Point(-89.228896165017289, 13.702962466811764, SpatialReferences.getWgs84());
 
         // Creating a graphic with point and symbol
-        SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.CIRCLE, 0xFFFF0000, 10);
-
-        Graphic graphic = new Graphic(point, symbol);
-        Graphic graphic2 = new Graphic(point2, symbol);
-        Graphic graphic3 = new Graphic(point3, symbol);
-
-        // Add a point with an id attribute
-        graphic.getAttributes().put("id", 1);
-        graphic2.getAttributes().put("id", 2);
-        graphic3.getAttributes().put("id", 27);
-
-        graphic.getAttributes().put("title", "Punto 0");
-        graphic2.getAttributes().put("title", "Punto 1");
-        graphic3.getAttributes().put("title", "Punto 2");
+//        SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.CIRCLE, 0xFFFF0000, 10);
+//
+//        Graphic graphic = new Graphic(point, symbol);
+//        Graphic graphic2 = new Graphic(point2, symbol);
+//        Graphic graphic3 = new Graphic(point3, symbol);
+//
+//        // Add a point with an id attribute
+//        graphic.getAttributes().put("id", 1);
+//        graphic2.getAttributes().put("id", 2);
+//        graphic3.getAttributes().put("id", 27);
+//
+//        graphic.getAttributes().put("title", "Punto 0");
+//        graphic2.getAttributes().put("title", "Punto 1");
+//        graphic3.getAttributes().put("title", "Punto 2");
 
         // Adding graphic to the graphics overlay
 
+        IntersectionRaster.getPointsRaster();
+
         graphicsOverlay = new GraphicsOverlay();
 
-        graphicsOverlay.getGraphics().addAll(Arrays.asList(graphic, graphic2, graphic3));
+        graphicsOverlay.getGraphics().addAll(IntersectionRaster.getPointsRaster());
 
 
 
