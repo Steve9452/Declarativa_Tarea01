@@ -40,7 +40,7 @@ public class PrologController {
 
         // Saving onSolution into list
 
-
+        //query.allSolutions();
         String[] pointsId = query.oneSolution().get("Ruta").toString()
                 .replaceAll("^\\[|]$", "")
                 .split(",\\s*");

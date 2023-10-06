@@ -71,7 +71,7 @@ public class MainController implements Initializable {
         // Add a point with an id attribute
         graphic.getAttributes().put("id", 1);
         graphic2.getAttributes().put("id", 2);
-        graphic3.getAttributes().put("id", 3);
+        graphic3.getAttributes().put("id", 27);
 
         graphic.getAttributes().put("title", "Punto 0");
         graphic2.getAttributes().put("title", "Punto 1");

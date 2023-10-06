@@ -1,63 +1,33 @@
 punto(1).
-
 punto(2).
-
 punto(3).
-
 punto(4).
-
 punto(5).
-
 punto(6).
-
 punto(7).
-
 punto(8).
-
 punto(9).
-
 punto(10).
-
 punto(11).
-
 punto(12).
-
 punto(13).
-
 punto(14).
-
 punto(15).
-
 punto(16).
-
 punto(17).
-
 punto(18).
-
 punto(19).
-
 punto(20).
-
 punto(21).
-
 punto(22).
-
 punto(23).
-
 punto(24).
-
 punto(25).
-
 punto(26).
-
 punto(27).
-
 punto(28).
-
 punto(29).
-
 punto(30).
-
   
   
   
@@ -114,6 +84,20 @@ coordenada(25,-89.22680779534906, 13.707585030806259 ).
 
 coordenada(26,-89.239015069595354, 13.714152680218579 ).
 
+coordenada(27,-89.243817462245403, 13.710228256684607 ).
+coordenada(28,-89.237789037883076, 13.708531222243993 ).
+coordenada(29,-89.240845969546001, 13.706073255930214 ).
+coordenada(30,-89.23893621026906, 13.704883980540865 ).
+coordenada(31,-89.241691047035829, 13.710664495152757 ).
+coordenada(32,-89.239495298448887, 13.710706459360988 ).
+coordenada(33,-89.238861770987711, 13.710636519009769 ).
+coordenada(34,-89.242950902782482, 13.709055861517729 ).
+coordenada(35,-89.243951588204084, 13.709454523923759 ).
+coordenada(36,-89.242182899835072, 13.705172071636358 ).
+coordenada(37,-89.243514269039665, 13.703075907260443 ).
+
+
+
   
   
   
@@ -146,7 +130,6 @@ segmento(5,7).
 segmento(5,4).
 segmento(5,14).
 
-segmento(14,5).
 
 segmento(6,15).
 segmento(6,10).
@@ -174,19 +157,131 @@ segmento(11,10).
 segmento(11,12).
 segmento(11,24).
 
+segmento(12,28).
+segmento(12,11).
+segmento(12,13).
 
 
-% Return a route between two points
+segmento(13,15).
+segmento(13,10).
+segmento(13,12).
+
+segmento(14,5).
+segmento(14,18).
+
+
+segmento(15,13).
+segmento(15,6).
+segmento(15,14).
+
+% 20,19,29, 28
+segmento(16,20).
+segmento(16,19).
+segmento(16,29).
+segmento(16,28).
+
+% 18, 29 , 30
+segmento(17,18).
+segmento(17,29).
+segmento(17,30).
+
+% 22, 14, 17
+segmento(18,22).
+segmento(18,14).
+segmento(18,17).
+
+% 31, 32, 16
+segmento(19,31).
+segmento(19,32).
+segmento(19,16).
+
+% 34, 21, 16, 31
+segmento(20,34).
+segmento(20,21).
+segmento(20,16).
+segmento(20,31).
+
+% 36
+segmento(21,36).
+
+% (22)
+segmento(22,37).
+% 28, 33
+segmento(23,28).
+segmento(23,33).
+
+% 11, 26
+segmento(24,11).
+segmento(24,26).
+
+% 24
+segmento(25,24).
+
+% 24
+segmento(26,24).
+
+% 35
+segmento(27,35).
+
+% 16
+segmento(28,16).
+
+% 16
+segmento(29,16).
+
+% 17
+segmento(30,17).
+
+% 20
+segmento(31,20).
+
+% 19, 33
+segmento(32,19).
+segmento(32,33).
+
+% 23, 32
+segmento(33,23).
+segmento(33,32).
+
+% 35, 20
+segmento(34,35).
+segmento(34,20).
+
+% 27, 34
+segmento(35,27).
+segmento(35,34).
+
+% 22
+segmento(36,22).
+segmento(36,37).
+
+
+
+
+% Return just one route between two points if not exists return anything
 % example: route(1,2,Route).
 
-route(X,Y,Route) :- route(X,Y,[],Route).
+% Regla para encontrar una ruta entre dos puntos
+route(X, Y, Ruta) :-
+    dfs(X, Y, [X], RutaInversa),  % Llama a la búsqueda en profundidad (DFS)
+    reverse(RutaInversa, Ruta).   % Invierte la ruta encontrada
+
+% Regla para la búsqueda en profundidad (DFS)
+dfs(X, X, _, [X]).
+dfs(X, Y, Visitados, [X | Ruta]) :-
+    segmento(X, Z),                 % Encuentra un punto Z conectado a X
+    \+ member(Z, Visitados),        % Asegura que Z no haya sido visitado previamente
+    dfs(Z, Y, [Z | Visitados], Ruta).
+
+% Predicado para comprobar si un elemento está en una lista
+member(X, [X | _]).
+member(X, [_ | Resto]) :-
+    member(X, Resto).
 
 
-% Base case and return true
 
 
-route(X,Y,_,[X,Y]) :- segmento(X,Y).
 
-route(X,Y,V,[X|Route]) :- segmento(X,Z), not(member(Z,V)), route(Z,Y,[Z|V],Route).
+
 
 
