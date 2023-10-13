@@ -20,6 +20,8 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.*;
 
+import static com.example.tarea1declarativa.IntersectionRaster.getPointsRaster;
+
 public class MainController implements Initializable {
 
     @FXML
@@ -57,40 +59,24 @@ public class MainController implements Initializable {
     }
 
     public void loadPoints(){
-//        Point point = new Point(-89.224267304412422, 13.703150717800634, SpatialReferences.getWgs84());
-//        Point point2 = new Point(-89.227109209527967, 13.703067050713086, SpatialReferences.getWgs84());
-//        Point point3 = new Point(-89.228896165017289, 13.702962466811764, SpatialReferences.getWgs84());
-
-        // Creating a graphic with point and symbol
-//        SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.CIRCLE, 0xFFFF0000, 10);
-//
-//        Graphic graphic = new Graphic(point, symbol);
-//        Graphic graphic2 = new Graphic(point2, symbol);
-//        Graphic graphic3 = new Graphic(point3, symbol);
-//
-//        // Add a point with an id attribute
-//        graphic.getAttributes().put("id", 1);
-//        graphic2.getAttributes().put("id", 2);
-//        graphic3.getAttributes().put("id", 27);
-//
-//        graphic.getAttributes().put("title", "Punto 0");
-//        graphic2.getAttributes().put("title", "Punto 1");
-//        graphic3.getAttributes().put("title", "Punto 2");
 
         // Adding graphic to the graphics overlay
 
-        IntersectionRaster.getPointsRaster();
-
         graphicsOverlay = new GraphicsOverlay();
 
-        graphicsOverlay.getGraphics().addAll(IntersectionRaster.getPointsRaster());
+        //graphicsOverlay.getGraphics().addAll(IntersectionRaster.getPointsRaster());
 
+        getPointsRaster().forEach( graphic -> {
+            graphicsOverlay.getGraphics().add(graphic);
+        });
 
+        //graphicsOverlay.getGraphics().addAll(Arrays.asList(graphic, graphic2, graphic3));
 
         // Adding graphics overlay to the map view
         mapView.getGraphicsOverlays().add(graphicsOverlay);
 
         setPointsEventListener(graphicsOverlay);
+
     }
 
 
@@ -174,9 +160,6 @@ public class MainController implements Initializable {
                                     selectedPointsId.add((int) identifiedGraphic.getAttributes().get("id"));
                                 }
 
-                                System.out.println(identifiedGraphic.getAttributes());
-                                System.out.println("Identified graphic: " + identifiedGraphic.getAttributes().get("id"));
-
                                 //Display popup
 
                                 mapView.getCallout().setTitle(identifiedGraphic.getAttributes().get("id").toString());
@@ -213,22 +196,7 @@ public class MainController implements Initializable {
     public void displayRoute(){
        RouteTask routeTask = new RouteTask("https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World");
 
-//       RouteParameters routeParameters = new RouteParameters();
-       // creating two stops examples
-
-//            Stop stop1 = new Stop(new Point(-89.2244, 13.7013, SpatialReferences.getWgs84()));
-//            Stop stop2 = new Stop(new Point(-89.2254, 13.7013, SpatialReferences.getWgs84()));
-//            Stop stop3 = new Stop(new Point(-89.2264, 13.7013, SpatialReferences.getWgs84()));
-//
-//            stops.add(stop1);
-//            stops.add(stop2);
-//            stops.add(stop3);
-
-//            routeParameters.setStops(stops);
-//            routeParameters.setReturnDirections(true);
-//            routeParameters.setReturnStops(true);
-//            routeParameters.setReturnRoutes(true);
-
+        // Default parameters
         ListenableFuture<RouteParameters> routeParametersFuture = routeTask.createDefaultParametersAsync();
 
 
@@ -237,7 +205,7 @@ public class MainController implements Initializable {
                 RouteParameters routeParameters = routeParametersFuture.get();
                 routeParameters.setStops(stops);
 
-                routeParameters.setReturnDirections(true);
+                routeParameters.setReturnDirections(false);
                 routeParameters.setDirectionsLanguage("es");
 
                 ListenableFuture<RouteResult> routeResultFuture = routeTask.solveRouteAsync(routeParameters);

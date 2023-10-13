@@ -44,7 +44,7 @@ public class PrologController {
         String[] pointsId = query.oneSolution().get("Ruta").toString()
                 .replaceAll("^\\[|]$", "")
                 .split(",\\s*");
-
+        System.out.println(Arrays.toString(pointsId));
         // Inserting into list
         this.stopsId = Arrays.stream(pointsId).map(Integer::parseInt).toList();
 
