@@ -5,10 +5,8 @@ import org.jpl7.*;
 
 import java.lang.Integer;
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import com.example.tarea1declarativa.Intersection;
 
 public class PrologController {
@@ -17,6 +15,7 @@ public class PrologController {
     List<Integer> stopsId;
     private final HashMap<Integer, Intersection> intersections = new HashMap<>();
 
+    private final List<IntersectionRaster.PointCord> points = new ArrayList<>();
 
     public List<Integer> getStops() {
         return stopsId;
@@ -25,6 +24,12 @@ public class PrologController {
     public HashMap<Integer, Intersection> getIntersections() {
         return intersections;
     }
+
+
+    public List<IntersectionRaster.PointCord> getPoints(){
+        return points;
+    }
+
 
     public void populateStopsId(int from, int to ){
 
@@ -35,7 +40,7 @@ public class PrologController {
 
         // route(1,4,Ruta).
         //String route = "route(1,4,Ruta).";
-        String route = "ruta_minima("+from+","+to+",Ruta).";
+        String route = "ruta_minima2("+from+","+to+",Ruta).";
         Query query = new Query(route);
 
         // Saving onSolution into list
@@ -49,10 +54,18 @@ public class PrologController {
 //                .replaceAll("^\\[|]$", "")
 //                .split(",\\s*");
         System.out.println(Arrays.toString(pointsId));
+
         //System.out.println(Arrays.toString(allPoints));
         // Inserting into list
         this.stopsId = Arrays.stream(pointsId).map(Integer::parseInt).toList();
 
+        // using ruta_minima2() instead of ruta_minima()
+        // =====
+        List<Integer> aux = new ArrayList<Integer>();
+        aux.add(from);
+        aux.addAll(stopsId);
+        stopsId = aux;
+        // =====
     }
 
     public void populateIntersections() {

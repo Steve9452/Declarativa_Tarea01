@@ -2,6 +2,8 @@ package com.example.tarea1declarativa;
 
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.PointCollection;
+import com.esri.arcgisruntime.geometry.Polyline;
 import com.esri.arcgisruntime.geometry.SpatialReferences;
 import com.esri.arcgisruntime.mapping.view.Graphic;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
@@ -49,6 +51,7 @@ public class MainController implements Initializable {
 
     private Graphic routeGraphicAux;
 
+    private Graphic polylineGraphic;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -69,7 +72,24 @@ public class MainController implements Initializable {
             graphicsOverlay.getGraphics().add(graphic);
         });
 
-          //  graphicsOverlay.getGraphics().add(drawLine());
+
+
+        // Prueba de linea de puntos
+//        List<Point> points = new ArrayList<>();
+//        points.add(new Point(-89.224267304412422, 13.703150717800634, SpatialReferences.getWgs84()));
+//        points.add(new Point(-89.227109209527967, 13.703067050713086 , SpatialReferences.getWgs84()));
+//        points.add(new Point(-89.228896165017289, 13.702962466811764 , SpatialReferences.getWgs84()));
+//
+//        PointCollection polylinePoints = new PointCollection(points);
+//        Polyline polyline = new Polyline( polylinePoints );
+//
+//        Graphic graphic = new Graphic(polyline, polylineSymbol);
+
+
+//        LinesOnMap linesOnMap = new LinesOnMap();
+//
+//
+//        graphicsOverlay.getGraphics().add(linesOnMap.drawLine(IntersectionRaster.points));
 
 
         //graphicsOverlay.getGraphics().addAll(Arrays.asList(graphic, graphic2, graphic3));
@@ -104,9 +124,20 @@ public class MainController implements Initializable {
         prolog.populateIntersections();
 
         for ( Map.Entry<Integer,Intersection> entry : prolog.getIntersections().entrySet()){
+            System.out.println(entry.getKey() + " " + entry.getValue());
             stops.add( new Stop( interceptionToPoint(entry.getValue())));
+            points.add( interceptionToPoint(entry.getValue()));
         }
+
+
+
+
+
+
+        System.out.println(stops);
+        System.out.println(points);
         displayRoute();
+        displayPolyline();
         //System.out.println(stops);
     }
 
@@ -218,9 +249,6 @@ public class MainController implements Initializable {
 
                 routeParameters.setReturnDirections(false);
                 routeParameters.setDirectionsLanguage("es");
-                TravelMode travelMode = new TravelMode();
-//                travelMode.setType( TravelModes.getWalkingMode());
-                //routeParameters.setTravelMode(travelMode);
 
 
                 // Walking mode 4, 5
@@ -250,12 +278,23 @@ public class MainController implements Initializable {
         });
     }
 
+    public void displayPolyline(){
+        PointCollection polylinePoints = new PointCollection(points);
+        Polyline polyline = new Polyline(polylinePoints);
+
+        SimpleLineSymbol polylineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, 0xFF00FF00, 5);
+        polylineGraphic = new Graphic(polyline, polylineSymbol);
+
+        graphicsOverlay.getGraphics().add(polylineGraphic);
+    }
     public void resetRoute(){
         clearPointsSelection();
         selectedPointsId.clear();
         stops.clear();
+        points.clear();
         // clear route
         graphicsOverlay.getGraphics().remove( routeGraphicAux );
+        graphicsOverlay.getGraphics().remove( polylineGraphic );
         //clearButton.setDisable(true);
 
     }

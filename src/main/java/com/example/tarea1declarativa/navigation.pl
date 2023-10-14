@@ -372,39 +372,39 @@ member(X, [X | _]).
 member(X, [_ | Resto]) :-
     member(X, Resto).
 
-    ruta_minima(Inicio, Destino, Ruta) :-
-        ruta_minima(Inicio, Destino, [Inicio], RutaInvertida),
-        reverse(RutaInvertida, Ruta).
+
+
+
+
+
+
+
+ruta_minima(Inicio, Destino, Ruta) :-
+    ruta_minima(Inicio, Destino, [Inicio], RutaInvertida),
+    reverse(RutaInvertida, Ruta).
     
-    ruta_minima(Destino, Destino, Ruta, Ruta).
-    ruta_minima(Inicio, Destino, Visitados, Ruta) :-
-        segmento(Inicio, Intermedio),
-        not(member(Intermedio, Visitados)),
-        ruta_minima(Intermedio, Destino, [Intermedio|Visitados], Ruta).
-
-
-% Predicado para calcular la ruta con menor cantidad de saltos
-
-ruta_minima_saltos(Inicio, Destino, Ruta) :-
-    ruta_minima_saltos(Inicio, Destino, [Inicio], Ruta).
-
-ruta_minima_saltos(Destino, Destino, Ruta, Ruta).
-ruta_minima_saltos(Inicio, Destino, Visitados, Ruta) :-
+ruta_minima(Destino, Destino, Ruta, Ruta).
+ruta_minima(Inicio, Destino, Visitados, Ruta) :-
     segmento(Inicio, Intermedio),
     not(member(Intermedio, Visitados)),
-    ruta_minima_saltos(Intermedio, Destino, [Intermedio|Visitados], Ruta).
+    ruta_minima(Intermedio, Destino, [Intermedio|Visitados], Ruta).
 
-% Predicado para calcular la ruta con menor distancia
 
-ruta_minima_distancia(Inicio, Destino, Ruta) :-
-    ruta_minima_distancia(Inicio, Destino, [Inicio], Ruta).
 
-ruta_minima_distancia(Destino, Destino, Ruta, Ruta).
+% Predicado para encontrar una ruta con la menor cantidad de saltos
+ruta_minima2(Inicio, Destino, Ruta) :-
+    bfs([(Inicio, [])], Destino, Ruta).
 
-ruta_minima_distancia(Inicio, Destino, Visitados, Ruta) :-
-    segmento(Inicio, Intermedio),
-    not(member(Intermedio, Visitados)),
-    ruta_minima_distancia(Intermedio, Destino, [Intermedio|Visitados], Ruta).
+% Predicado de búsqueda en anchura (BFS)
+bfs([(Destino, RutaParcial) | _], Destino, Ruta) :-
+    reverse(RutaParcial, Ruta).
+bfs([(Nodo, RutaParcial) | Cola], Destino, Ruta) :-
+    findall((ProximoNodo, [ProximoNodo | RutaParcial]),
+            (segmento(Nodo, ProximoNodo), not(member(ProximoNodo, [Nodo | RutaParcial]))),
+            NodosHijos),
+    append(Cola, NodosHijos, ColaNueva),
+    bfs(ColaNueva, Destino, Ruta).
+
 
 
 

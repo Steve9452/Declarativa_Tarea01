@@ -41,13 +41,8 @@ public class IntersectionRaster {
 
     static List<Point> aux = new ArrayList<>();
 
-    public static Graphic drawLine(){
 
-        Polyline polyline = new Polyline ((PointCollection) aux);
-
-        return new Graphic(polyline);
-
-    }
+    public static List<PointCord> points = new ArrayList<>();
 
     public static List<Graphic> getPointsRaster() {
 
@@ -128,7 +123,7 @@ public class IntersectionRaster {
                     "{  \"id\": 67, \"latitude\": -89.236276720873917, \"longitude\" : 13.710361653269644   }\n" +
                     "]\n";
 
-            List<PointCord> points = gson.fromJson(json, new TypeToken<List<PointCord>>() {}.getType());
+            points = gson.fromJson(json, new TypeToken<List<PointCord>>() {}.getType());
 
             //System.out.println(points);
             SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.CIRCLE, 0xFFFF0000, 10);
