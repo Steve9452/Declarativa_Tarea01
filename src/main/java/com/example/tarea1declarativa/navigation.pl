@@ -1,33 +1,4 @@
-punto(1).
-punto(2).
-punto(3).
-punto(4).
-punto(5).
-punto(6).
-punto(7).
-punto(8).
-punto(9).
-punto(10).
-punto(11).
-punto(12).
-punto(13).
-punto(14).
-punto(15).
-punto(16).
-punto(17).
-punto(18).
-punto(19).
-punto(20).
-punto(21).
-punto(22).
-punto(23).
-punto(24).
-punto(25).
-punto(26).
-punto(27).
-punto(28).
-punto(29).
-punto(30).
+
 
 
 coordenada(1,-89.224267304412422, 13.703150717800634 ).
@@ -110,7 +81,6 @@ coordenada(67, -89.236276720873917, 13.710361653269644).
 
 segmento(1,2).
 
-segmento(2,1).
 segmento(2,3).
 segmento(2,39).
 
@@ -120,30 +90,26 @@ segmento(3,8).
 segmento(3,4).
 
 
-
-
 segmento(4,3).
 segmento(4,5).
-segmento(4,7).
 segmento(4,41).
 
 
-segmento(5,7).
-segmento(5,4).
-segmento(5,14).
+segmento(5,6).
+segmento(5,42).
+segmento(5,41).
 
 
-segmento(6,15).
-segmento(6,10).
+segmento(6,48).
+segmento(6,46).
 segmento(6,7).
-segmento(6,5).
 
 segmento(7,4).
 segmento(7,6).
 segmento(7,8).
 
 
-segmento(8,3).
+segmento(8,9).
 segmento(8,7).
 segmento(8,43).
 
@@ -152,21 +118,22 @@ segmento(9,10).
 
 segmento(10,52).
 segmento(10,55).
+segmento(10,9).
 
 
 segmento(11,24).
 segmento(11,62).
+segmento(11,25). % *****
 
-
-segmento(12,28).
+segmento(12,61).
 segmento(12,53).
 segmento(12,63).
 
 segmento(13,49).
+segmento(13,59).
 
-segmento(14,5).
 segmento(14,18).
-
+segmento(14,42). % *****
 
 segmento(15,46).
 segmento(15,45).
@@ -174,13 +141,11 @@ segmento(15,45).
 % 20,19,29, 28
 segmento(16,20).
 segmento(16,19).
-segmento(16,29).
-segmento(16,28).
 
 % 18, 29 , 30
-segmento(17,18).
-segmento(17,29).
 segmento(17,30).
+segmento(17,29).
+segmento(17,36).
 
 % 22, 14, 17
 segmento(18,22).
@@ -190,19 +155,18 @@ segmento(18,17).
 % 31, 32, 16
 segmento(19,31).
 segmento(19,32).
-segmento(19,16).
 
 % 34, 21, 16, 31
 segmento(20,34).
 segmento(20,21).
 segmento(20,16).
-segmento(20,31).
 
 % 36
 segmento(21,36).
 
-% (22)
-segmento(22,37).
+% 22, 18
+% segmento(22,37).
+segmento(22,18).
 
 % 33, 65, 67,
 segmento(23,65).
@@ -389,9 +353,8 @@ segmento(67,66).
 segmento(67,23).
 
 
-% Return just one route between two points if not exists return anything
 % example: route(1,2,Route).
-
+%  ?-[1,2]
 % Regla para encontrar una ruta entre dos puntos
 route(X, Y, Ruta) :-
     dfs(X, Y, [X], RutaInversa),  % Llama a la búsqueda en profundidad (DFS)
@@ -409,9 +372,39 @@ member(X, [X | _]).
 member(X, [_ | Resto]) :-
     member(X, Resto).
 
+    ruta_minima(Inicio, Destino, Ruta) :-
+        ruta_minima(Inicio, Destino, [Inicio], RutaInvertida),
+        reverse(RutaInvertida, Ruta).
+    
+    ruta_minima(Destino, Destino, Ruta, Ruta).
+    ruta_minima(Inicio, Destino, Visitados, Ruta) :-
+        segmento(Inicio, Intermedio),
+        not(member(Intermedio, Visitados)),
+        ruta_minima(Intermedio, Destino, [Intermedio|Visitados], Ruta).
 
 
+% Predicado para calcular la ruta con menor cantidad de saltos
 
+ruta_minima_saltos(Inicio, Destino, Ruta) :-
+    ruta_minima_saltos(Inicio, Destino, [Inicio], Ruta).
+
+ruta_minima_saltos(Destino, Destino, Ruta, Ruta).
+ruta_minima_saltos(Inicio, Destino, Visitados, Ruta) :-
+    segmento(Inicio, Intermedio),
+    not(member(Intermedio, Visitados)),
+    ruta_minima_saltos(Intermedio, Destino, [Intermedio|Visitados], Ruta).
+
+% Predicado para calcular la ruta con menor distancia
+
+ruta_minima_distancia(Inicio, Destino, Ruta) :-
+    ruta_minima_distancia(Inicio, Destino, [Inicio], Ruta).
+
+ruta_minima_distancia(Destino, Destino, Ruta, Ruta).
+
+ruta_minima_distancia(Inicio, Destino, Visitados, Ruta) :-
+    segmento(Inicio, Intermedio),
+    not(member(Intermedio, Visitados)),
+    ruta_minima_distancia(Intermedio, Destino, [Intermedio|Visitados], Ruta).
 
 
 

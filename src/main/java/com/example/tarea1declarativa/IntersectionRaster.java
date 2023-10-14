@@ -2,6 +2,8 @@ package com.example.tarea1declarativa;
 
 
 import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.PointCollection;
+import com.esri.arcgisruntime.geometry.Polyline;
 import com.esri.arcgisruntime.geometry.SpatialReferences;
 
 import java.io.File;
@@ -36,8 +38,18 @@ public class IntersectionRaster {
             return String.format("(id: %d, latitude: %f, longitude: %f)", id, latitude, longitude);
         }
     }
-    public static List<Graphic> getPointsRaster() {
 
+    static List<Point> aux = new ArrayList<>();
+
+    public static Graphic drawLine(){
+
+        Polyline polyline = new Polyline ((PointCollection) aux);
+
+        return new Graphic(polyline);
+
+    }
+
+    public static List<Graphic> getPointsRaster() {
 
         List<Graphic> graphics = new ArrayList<>();
         try {
@@ -117,12 +129,14 @@ public class IntersectionRaster {
                     "]\n";
 
             List<PointCord> points = gson.fromJson(json, new TypeToken<List<PointCord>>() {}.getType());
+
             //System.out.println(points);
             SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.CIRCLE, 0xFFFF0000, 10);
 
 
             for ( PointCord point : Objects.requireNonNull(points)) {
                 Point p = new Point(point.latitude, point.longitude, SpatialReferences.getWgs84());
+                aux.add(p);
                 Graphic graphic = new Graphic(p, symbol);
                 graphic.getAttributes().put("id", point.id);
                 graphic.getAttributes().put("title", "Punto " + point.id);

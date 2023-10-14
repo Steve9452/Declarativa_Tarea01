@@ -35,7 +35,7 @@ public class PrologController {
 
         // route(1,4,Ruta).
         //String route = "route(1,4,Ruta).";
-        String route = "route("+from+","+to+",Ruta).";
+        String route = "ruta_minima("+from+","+to+",Ruta).";
         Query query = new Query(route);
 
         // Saving onSolution into list
@@ -44,7 +44,12 @@ public class PrologController {
         String[] pointsId = query.oneSolution().get("Ruta").toString()
                 .replaceAll("^\\[|]$", "")
                 .split(",\\s*");
+
+//        String[] allPoints = Arrays.toString(query.allSolutions())
+//                .replaceAll("^\\[|]$", "")
+//                .split(",\\s*");
         System.out.println(Arrays.toString(pointsId));
+        //System.out.println(Arrays.toString(allPoints));
         // Inserting into list
         this.stopsId = Arrays.stream(pointsId).map(Integer::parseInt).toList();
 

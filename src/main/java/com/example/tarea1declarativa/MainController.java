@@ -8,7 +8,6 @@ import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.IdentifyGraphicsOverlayResult;
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
-import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
 import com.esri.arcgisruntime.tasks.networkanalysis.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,7 +19,7 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.*;
 
-import static com.example.tarea1declarativa.IntersectionRaster.getPointsRaster;
+import static com.example.tarea1declarativa.IntersectionRaster.*;
 
 public class MainController implements Initializable {
 
@@ -69,6 +68,9 @@ public class MainController implements Initializable {
         getPointsRaster().forEach( graphic -> {
             graphicsOverlay.getGraphics().add(graphic);
         });
+
+          //  graphicsOverlay.getGraphics().add(drawLine());
+
 
         //graphicsOverlay.getGraphics().addAll(Arrays.asList(graphic, graphic2, graphic3));
 
@@ -199,6 +201,15 @@ public class MainController implements Initializable {
         // Default parameters
         ListenableFuture<RouteParameters> routeParametersFuture = routeTask.createDefaultParametersAsync();
 
+//        TravelMode travelMode = new TravelMode();
+//        //travelMode.setType( "WALKING");
+//        try{
+//            routeParametersFuture.get().setTravelMode(travelMode);
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+
 
         routeParametersFuture.addDoneListener(() -> {
             try {
@@ -207,12 +218,20 @@ public class MainController implements Initializable {
 
                 routeParameters.setReturnDirections(false);
                 routeParameters.setDirectionsLanguage("es");
+                TravelMode travelMode = new TravelMode();
+//                travelMode.setType( TravelModes.getWalkingMode());
+                //routeParameters.setTravelMode(travelMode);
+
+
+                // Walking mode 4, 5
+//                routeTask.getRouteTaskInfo().getTravelModes().get(4).getType()
+                routeParameters.setTravelMode(routeTask.getRouteTaskInfo().getTravelModes().get(5));
 
                 ListenableFuture<RouteResult> routeResultFuture = routeTask.solveRouteAsync(routeParameters);
 
                 routeResultFuture.addDoneListener(() -> {
                     try {
-                        RouteResult routeResult = routeResultFuture.get();
+                        RouteResult routeResult = routeResultFuture. get();
                         Route route = routeResult.getRoutes().get(0);
 
 
