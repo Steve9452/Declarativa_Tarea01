@@ -37,6 +37,13 @@ public class IntersectionRaster {
         public String toString() {
             return String.format("(id: %d, latitude: %f, longitude: %f)", id, latitude, longitude);
         }
+
+        public Point toPoint(){
+            return new Point(this.longitude, this.latitude, SpatialReferences.getWgs84());
+        }
+        public int getId() {
+            return id;
+        }
     }
 
     static List<Point> aux = new ArrayList<>();

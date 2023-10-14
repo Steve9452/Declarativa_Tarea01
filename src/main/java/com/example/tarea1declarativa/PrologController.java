@@ -17,7 +17,7 @@ public class PrologController {
 
     private final List<IntersectionRaster.PointCord> points = new ArrayList<>();
 
-    public List<Integer> getStops() {
+    public List<Integer> getStopsId() {
         return stopsId;
     }
 
@@ -73,15 +73,15 @@ public class PrologController {
             System.out.println("Error al consultar");
             return;
         }
-        intersections.clear();
+        points.clear();
 
         stopsId.forEach( (id) -> {
             String route = "coordenada(" + id + ",Lat,Lng).";
             Query query = new Query(route);
             double lat = Double.parseDouble(query.oneSolution().get("Lat").toString());
             double lng = Double.parseDouble(query.oneSolution().get("Lng").toString());
-            Intersection intersection = new Intersection(id, lat, lng);
-            intersections.put(id, intersection);
+            IntersectionRaster.PointCord intersection = new IntersectionRaster.PointCord(id, lat, lng);
+            points.add(intersection);
         });
 
 //        for (Map.Entry<Integer, Intersection> entry : intersections.entrySet()) {

@@ -20,6 +20,7 @@ import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.example.tarea1declarativa.IntersectionRaster.*;
 
@@ -45,7 +46,7 @@ public class MainController implements Initializable {
     private final List<Integer> selectedPointsId = new ArrayList<>();
 
     // points -> prologController
-    private final List<Point> points = new ArrayList<>();
+    private List<Point> points = new ArrayList<>();
 
     PrologController prolog = new PrologController();
 
@@ -123,11 +124,26 @@ public class MainController implements Initializable {
         prolog.populateStopsId(from ,to);
         prolog.populateIntersections();
 
-        for ( Map.Entry<Integer,Intersection> entry : prolog.getIntersections().entrySet()){
-            System.out.println(entry.getKey() + " " + entry.getValue());
-            stops.add( new Stop( interceptionToPoint(entry.getValue())));
-            points.add( interceptionToPoint(entry.getValue()));
-        }
+//        for ( Map.Entry<Integer,Intersection> entry : prolog.getIntersections().entrySet()){
+//            System.out.println(entry.getKey() + " " + entry.getValue());
+//            stops.add( new Stop( interceptionToPoint(entry.getValue())));
+//            points.add( interceptionToPoint(entry.getValue()));
+//        }
+
+//        points = prolog.getPoints().stream().map( point -> {
+//            return new Point( point.latitude, point.longitude, SpatialReferences.getWgs84() );
+//        }).toList();
+
+
+
+
+        // extract points from stopsId
+
+        prolog.getStopsId().forEach( stopId -> {
+            Stop stop = new Stop( prolog.getPoints().stream().filter( p-> p.id == stopId).findFirst().get().toPoint());
+            stops.add(stop);
+            points.add(stop.getGeometry());
+        });
 
 
 
