@@ -26,6 +26,10 @@ public class IntersectionRaster {
         public double longitude;
         @SerializedName("latitude")
         public double latitude;
+        @SerializedName("type")
+        public String type;
+        @SerializedName("name")
+        public String name;
 
         public PointCord(int id, double longitude, double latitude) {
             this.id = id;
@@ -33,17 +37,22 @@ public class IntersectionRaster {
             this.latitude = latitude;
         }
 
-        @Override
-        public String toString() {
-            return String.format("(id: %d, latitude: %f, longitude: %f)", id, latitude, longitude);
+        public PointCord(int id, double longitude, double latitude, String type, String name) {
+            this.id = id;
+            this.longitude = longitude;
+            this.latitude = latitude;
+            this.type = type;
+            this.name = name;
         }
 
+        @Override
+        public String toString() {
+            return String.format("(id: %d, latitude: %f, longitude: %f)", id, latitude, longitude, type);
+        }
         public Point toPoint(){
             return new Point(this.longitude, this.latitude, SpatialReferences.getWgs84());
         }
-        public int getId() {
-            return id;
-        }
+        public String getType(){return this.type;}
     }
 
     static List<Point> aux = new ArrayList<>();
@@ -58,7 +67,31 @@ public class IntersectionRaster {
             //File file = new File(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource("coords.json")).getFile());
             //FileReader reader = new FileReader(file);
 
-
+//            { "type": "Feature", "properties": { "fid": 68, "nombre": "federacion salvadorena de futbol", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.238708492188607, 13.704264726677682 ] } },
+//            { "type": "Feature", "properties": { "fid": 69, "nombre": "Tipicos Marghot", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.234176537240529, 13.704504383133832 ] } },
+//            { "type": "Feature", "properties": { "fid": 70, "nombre": "Veterinaria ServiVet", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.230732945652363, 13.703138699352586 ] } },
+//            { "type": "Feature", "properties": { "fid": 71, "nombre": "Shopping Center", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.23286504699567, 13.706101283730865 ] } },
+//            { "type": "Feature", "properties": { "fid": 72, "nombre": "Embajada de alemania", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.234305135213845, 13.705933772114685 ] } },
+//            { "type": "Feature", "properties": { "fid": 73, "nombre": "Escuela Cristiana Maranatha", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.233452811780552, 13.706153459588066 ] } },
+//            { "type": "Feature", "properties": { "fid": 74, "nombre": "El Zocalo", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.228979563285449, 13.702117373611753 ] } },
+//            { "type": "Feature", "properties": { "fid": 75, "nombre": "UTEC", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.2265820412469, 13.704136833530622 ] } },
+//            { "type": "Feature", "properties": { "fid": 76, "nombre": "Centro de Cirujia Ambulatoria", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.230950923607296, 13.703736886082549 ] } },
+//            { "type": "Feature", "properties": { "fid": 77, "nombre": "Colegio Sagrado Corazon", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.237747768128898, 13.708967130984734 ] } },
+//            { "type": "Feature", "properties": { "fid": 78, "nombre": "Banco Agricola", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.241177355277188, 13.708827715628072 ] } },
+//            { "type": "Feature", "properties": { "fid": 79, "nombre": "Embajada de Honduras", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.242090558955667, 13.707526501642134 ] } },
+//            { "type": "Feature", "properties": { "fid": 80, "nombre": "Movistar Central", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.240217766649906, 13.70873899672165 ] } },
+//            { "type": "Feature", "properties": { "fid": 81, "nombre": "Asociacion Salvadorena de Ingenieros", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.232326527243771, 13.707485662558373 ] } },
+//            { "type": "Feature", "properties": { "fid": 82, "nombre": "Mosaico El Santo Papa", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.233589067567536, 13.70805740908485 ] } },
+//            { "type": "Feature", "properties": { "fid": 83, "nombre": "Oficinas Administrativas Fosalud", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.23209460249997, 13.706918139383706 ] } },
+//            { "type": "Feature", "properties": { "fid": 84, "nombre": "Pasteleria Bom Bom", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.231127766224432, 13.705980244481939 ] } },
+//            { "type": "Feature", "properties": { "fid": 85, "nombre": "Iglesia Manantial", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.231881521641611, 13.704287517779907 ] } },
+//            { "type": "Feature", "properties": { "fid": 86, "nombre": "DINAC", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.230614632728873, 13.704010089694696 ] } },
+//            { "type": "Feature", "properties": { "fid": 87, "nombre": "Academia Cristiana Internacional", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.229692731872476, 13.70385940526748 ] } },
+//            { "type": "Feature", "properties": { "fid": 88, "nombre": "Pasteleria Sweet", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.227989534535524, 13.703974883061468 ] } },
+//            { "type": "Feature", "properties": { "fid": 89, "nombre": "Galaxy Bowling", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.232830963561341, 13.703321446991358 ] } },
+//            { "type": "Feature", "properties": { "fid": 90, "nombre": "Unidad de Pensiones ISS", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.234842910713411, 13.703822790345336 ] } },
+//            { "type": "Feature", "properties": { "fid": 91, "nombre": "Gamero Ortodoncia", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.235808297459272, 13.703725619947379 ] } },
+//            { "type": "Feature", "properties": { "fid": 92, "nombre": "Super Selectos El Paseo", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.235415474924551, 13.702244118468538 ] } }
             Gson gson = new Gson();
             String json = "[\n" +
                     "{  \"id\": 1, \"latitude\": -89.224267304412422, \"longitude\" : 13.703150717800634   },\n" +
@@ -127,7 +160,32 @@ public class IntersectionRaster {
                     "{  \"id\": 64, \"latitude\": -89.23634126864151,  \"longitude\" :13.709499408971189 },\n" +
                     "{  \"id\": 65, \"latitude\": -89.237616087051592, \"longitude\" : 13.709671858084125   },\n" +
                     "{  \"id\": 66, \"latitude\": -89.23532464130183,  \"longitude\" :13.710032433092914 },\n" +
-                    "{  \"id\": 67, \"latitude\": -89.236276720873917, \"longitude\" : 13.710361653269644   }\n" +
+                    "{  \"id\": 67, \"latitude\": -89.236276720873917, \"longitude\" : 13.710361653269644   },\n" +
+                    "{  \"id\": 68, \"latitude\": -89.238708492188607, \"longitude\" : 13.704264726677682, \"type\": \"lugar\", \"name\": \"Federacion Salvadorena de futbol\"  },\n" +
+                    "{  \"id\": 69, \"latitude\": -89.234176537240529, \"longitude\" : 13.704504383133832, \"type\": \"lugar\", \"name\": \"Tipicos Margoth\"   },\n" +
+                    "{  \"id\": 70, \"latitude\": -89.230732945652363, \"longitude\" : 13.703138699352586, \"type\": \"lugar\", \"name\": \"Veterinaria ServiVet\"   },\n" +
+                    "{  \"id\": 71, \"latitude\": -89.23286504699567, \"longitude\" : 13.706101283730865, \"type\": \"lugar\", \"name\": \"ShoppingCenter\"   },\n" +
+                    "{ \"id\": 72, \"latitude\": -89.234305135213845, \"longitude\" : 13.705933772114685, \"type\": \"lugar\", \"name\": \"Embajada de alemania\"   },\n" +
+                    "{  \"id\": 73, \"latitude\": -89.233452811780552, \"longitude\" : 13.706153459588066, \"type\": \"lugar\", \"name\": \"Escuela Cristiana Maranatha\"   },\n" +
+                    "{  \"id\": 74, \"latitude\": -89.228979563285449, \"longitude\" : 13.702117373611753, \"type\": \"lugar\", \"name\": \"El Zocalo\"   },\n" +
+                    "{  \"id\": 75, \"latitude\": -89.2265820412469, \"longitude\" : 13.704136833530622, \"type\": \"lugar\", \"name\": \"UTEC\"   },\n" +
+                    "{  \"id\": 76, \"latitude\": -89.230950923607296, \"longitude\" : 13.703736886082549, \"type\": \"lugar\", \"name\": \"Centro de Cirujia Ambulatoria\"   },\n" +
+                    "{  \"id\": 77, \"latitude\": -89.237747768128898, \"longitude\" : 13.708967130984734, \"type\": \"lugar\", \"name\": \"Colegio Sagrado Corazon\"   },\n" +
+                    "{  \"id\": 78, \"latitude\": -89.241177355277188, \"longitude\" : 13.708827715628072, \"type\": \"lugar\", \"name\": \"Banco Agricola\"   },\n" +
+                    "{  \"id\": 79, \"latitude\": -89.242090558955667, \"longitude\" : 13.707526501642134, \"type\": \"lugar\", \"name\": \"Embajada de Honduras\"   },\n" +
+                    "{  \"id\": 80, \"latitude\": -89.240217766649906, \"longitude\" : 13.70873899672165, \"type\": \"lugar\", \"name\": \"Movistar Central\"   },\n" +
+                    "{  \"id\": 81, \"latitude\": -89.232326527243771, \"longitude\" : 13.707485662558373, \"type\": \"lugar\", \"name\": \"Asociacion Salvadorena de Ingenieros\"   },\n" +
+                    "{  \"id\": 82, \"latitude\": -89.233589067567536, \"longitude\" : 13.70805740908485, \"type\": \"lugar\", \"name\": \"Mosaico El Santo Papa\"   },\n" +
+                    "{  \"id\": 83, \"latitude\": -89.23209460249997, \"longitude\" : 13.706918139383706, \"type\": \"lugar\", \"name\": \"Oficinas Administrativas Fosalud\"   },\n" +
+                    "{  \"id\": 84, \"latitude\": -89.231127766224432, \"longitude\" : 13.705980244481939, \"type\": \"lugar\", \"name\": \"Pasteleria Bom Bom\"   },\n" +
+                    "{  \"id\": 85, \"latitude\": -89.231881521641611, \"longitude\" : 13.704287517779907, \"type\": \"lugar\", \"name\": \"Iglesia Manantial\"   },\n" +
+                    "{  \"id\": 86, \"latitude\": -89.230614632728873, \"longitude\" : 13.704010089694696, \"type\": \"lugar\", \"name\": \"DINAC\"   },\n" +
+                    "{  \"id\": 87, \"latitude\": -89.229692731872476, \"longitude\" : 13.70385940526748, \"type\": \"lugar\", \"name\": \"Academia Cristiana Internacional\"   },\n" +
+                    "{  \"id\": 88, \"latitude\": -89.227989534535524, \"longitude\" : 13.703974883061468, \"type\": \"lugar\", \"name\": \"Pasteleria Sweet\"   },\n" +
+                    "{  \"id\": 89, \"latitude\": -89.232830963561341, \"longitude\" : 13.703321446991358, \"type\": \"lugar\", \"name\": \"Galaxy Bowling\"   },\n" +
+                    "{  \"id\": 90, \"latitude\": -89.234842910713411, \"longitude\" : 13.703822790345336, \"type\": \"lugar\", \"name\": \"Unidad de Pensiones ISS\"   },\n" +
+                    "{  \"id\": 91, \"latitude\": -89.235808297459272, \"longitude\" : 13.703725619947379, \"type\": \"lugar\", \"name\": \"Gamero Ortodoncia\"   },\n" +
+                    "{  \"id\": 92, \"latitude\": -89.235415474924551, \"longitude\" : 13.702244118468538, \"type\": \"lugar\", \"name\": \"Super Selectos El Paseo\"   }\n" +
                     "]\n";
 
             points = gson.fromJson(json, new TypeToken<List<PointCord>>() {}.getType());
@@ -137,11 +195,15 @@ public class IntersectionRaster {
 
 
             for ( PointCord point : Objects.requireNonNull(points)) {
+                if(!Objects.equals(point.type, "lugar"))
+                    continue;
                 Point p = new Point(point.latitude, point.longitude, SpatialReferences.getWgs84());
                 aux.add(p);
                 Graphic graphic = new Graphic(p, symbol);
                 graphic.getAttributes().put("id", point.id);
                 graphic.getAttributes().put("title", "Punto " + point.id);
+                graphic.getAttributes().put("type", point.type);
+                graphic.getAttributes().put("name", point.name);
                 graphics.add(graphic);
 
             }

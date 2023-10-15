@@ -71,8 +71,80 @@ coordenada(65, -89.237616087051592, 13.709671858084125).
 coordenada(66, -89.23532464130183, 13.710032433092914).
 coordenada(67, -89.236276720873917, 13.710361653269644).
 
+% Federacion salvadorena de futbol
+coordenada(68, -89.238708492188607, 13.704264726677682  ).
 
+% Tipicos Margoth
+coordenada(69, -89.234176537240529, 13.704504383133832 ).
 
+% Veterinaria ServiVet
+coordenada(70, -89.230732945652363, 13.703138699352586 ).
+
+% ShoppingCenter
+coordenada(71, -89.23286504699567, 13.706101283730865 ).
+
+% Embajada de alemania
+coordenada(72, -89.234305135213845, 13.705933772114685 ).
+
+% Escuela Cristiana Maranatha
+coordenada(73, -89.233452811780552, 13.706153459588066 ).
+
+% El Zocalo
+coordenada(74, -89.228979563285449, 13.702117373611753 ).
+
+% UTEC
+coordenada(75, -89.2265820412469, 13.704136833530622 ).
+
+% Centro de cirujia Ambulatoria
+coordenada(76, -89.230950923607296, 13.703736886082549 ).
+
+% Colegio Sagrado Corazon
+coordenada(77, -89.237747768128898, 13.708967130984734 ).
+
+% Banco Agricola
+coordenada(78, -89.241177355277188, 13.708827715628072 ).
+
+% Embajada de Honduras
+coordenada(79, -89.242090558955667, 13.707526501642134 ).
+
+% Movistar Central
+coordenada(80, -89.240217766649906, 13.70873899672165 ).
+
+% Asociacion Salvadorena de Ingenieros
+coordenada(81, -89.232326527243771, 13.707485662558373 ).
+
+% Mosaico El Santo Papa
+coordenada(82, -89.233589067567536, 13.70805740908485 ).
+
+% Oficinas Administrativas Fosalud
+coordenada(83, -89.23209460249997, 13.706918139383706 ).
+
+% Pasteleria Bom Bom
+coordenada(84, -89.231127766224432, 13.705980244481939 ).
+
+% Iglesia Manantial
+coordenada(85, -89.231881521641611, 13.704287517779907 ).
+
+% DINAC
+coordenada(86, -89.230614632728873, 13.704010089694696 ).
+
+% Academia Cristiana Internacional
+coordenada(87, -89.229692731872476, 13.70385940526748 ).
+
+% Pasteleria Sweet
+coordenada(88, -89.227989534535524, 13.703974883061468 ).
+
+% Galaxy Bowling
+coordenada(89, -89.232830963561341, 13.703321446991358 ).
+
+% Unidad de Pensiones ISS
+coordenada(90, -89.234842910713411, 13.703822790345336 ).
+
+% Gamero Ortodoncia
+coordenada(91, -89.235808297459272, 13.703725619947379 ).
+
+% Super Selectos El Paseo
+coordenada(92, -89.235415474924551, 13.702244118468538 ).
 
 
 % Definicion de segmentos
@@ -351,6 +423,79 @@ segmento(66,63).
 segmento(67,64).
 segmento(67,66).
 segmento(67,23).
+
+
+% lugar(idCoordenada, nombre, llegaPor, SalePor).
+lugar(68, 'Federacion Salvadorena de futbol', 30, 30).
+
+lugar(69, 'Tipicos Margoth', 47 , 48).
+
+lugar(70, 'Veterinaria ServiVet', 7, 4).
+
+lugar(71, 'ShoppingCenter', 10, 52).
+
+lugar(72, 'Embajada de alemania', 51, 51).
+
+lugar(73, 'Escuela Cristiana Maranatha', 10, 52).
+
+lugar(74, 'El Zocalo', 40, 3).
+
+lugar(75, 'UTEC', 43, 43).
+
+lugar(76, 'Centro de cirujia Ambulatoria', 6,7).
+
+lugar(77, 'Colegio Sagrado Corazon', 28, 65).
+
+lugar(78, 'Banco Agricola', 20,16).
+
+lugar(79, 'Embajada de Honduras', 20,21).
+
+lugar(80, 'Movistar Central', 28,16).
+
+lugar(81, 'Asociacion Salvadorena de Ingenieros', 55, 11).
+
+lugar(82, 'Mosaico El Santo Papa', 11, 62).
+
+lugar(83, 'Oficinas Administrativas Fosalud', 55, 9 ).
+
+lugar(84, 'Pasteleria Bom Bom', 9, 10).
+
+lugar(85, 'Iglesia Manantial', 48, 57).
+
+lugar(86, 'DINAC', 57, 7).
+
+lugar(87, 'Academia Cristiana Internacional', 7, 7).
+
+lugar(88, 'Pasteleria Sweet', 8, 43).
+
+lugar(89, 'Galaxy Bowling', 5, 6).
+
+lugar(90, 'Unidad de Pensiones ISS', 46, 15).
+
+lugar(91, 'Gamero Ortodoncia', 15, 45).
+
+lugar(92, 'Super Selectos El Paseo', 14, 42).
+
+
+
+
+
+
+
+
+% return coordenada de un lugar
+coordenada_lugar(Id, Lat, Lng, LlegaPor, SalePor) :-
+    lugar(Id, _, LlegaPor, SalePor),
+    coordenada(Id, Lat, Lng).
+
+
+rutaDesdeLugar(IdLugar, IdDestino, Ruta) :-
+    coordenada_lugar(IdLugar, _, _, _, SalePor),
+    coordenada_lugar(IdDestino, _, _, LlegaPor, _),
+    ruta_minima2(SalePor, LlegaPor, RutaAux),
+    append([IdLugar], RutaAux, RutaAux2),
+    append(RutaAux2, [IdDestino], Ruta).
+    
 
 
 % example: route(1,2,Route).

@@ -58,6 +58,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         mapView.setMap(MapSettings.mapInit());
+        graphicsOverlay = new GraphicsOverlay();
         loadPoints();
     }
 
@@ -65,37 +66,10 @@ public class MainController implements Initializable {
 
         // Adding graphic to the graphics overlay
 
-        graphicsOverlay = new GraphicsOverlay();
-
-        //graphicsOverlay.getGraphics().addAll(IntersectionRaster.getPointsRaster());
-
         getPointsRaster().forEach( graphic -> {
             graphicsOverlay.getGraphics().add(graphic);
         });
 
-
-
-        // Prueba de linea de puntos
-//        List<Point> points = new ArrayList<>();
-//        points.add(new Point(-89.224267304412422, 13.703150717800634, SpatialReferences.getWgs84()));
-//        points.add(new Point(-89.227109209527967, 13.703067050713086 , SpatialReferences.getWgs84()));
-//        points.add(new Point(-89.228896165017289, 13.702962466811764 , SpatialReferences.getWgs84()));
-//
-//        PointCollection polylinePoints = new PointCollection(points);
-//        Polyline polyline = new Polyline( polylinePoints );
-//
-//        Graphic graphic = new Graphic(polyline, polylineSymbol);
-
-
-//        LinesOnMap linesOnMap = new LinesOnMap();
-//
-//
-//        graphicsOverlay.getGraphics().add(linesOnMap.drawLine(IntersectionRaster.points));
-
-
-        //graphicsOverlay.getGraphics().addAll(Arrays.asList(graphic, graphic2, graphic3));
-
-        // Adding graphics overlay to the map view
         mapView.getGraphicsOverlays().add(graphicsOverlay);
 
         setPointsEventListener(graphicsOverlay);
@@ -159,16 +133,6 @@ public class MainController implements Initializable {
 
 
 
-    private Point interceptionToPoint(Intersection i){
-        return new Point( i.getLat(), i.getLon(), SpatialReferences.getWgs84()  );
-    }
-    private List<Stop> getStops(List<Point> points){
-        List<Stop> _stops = new ArrayList<>();
-        for (Point point : points) {
-            _stops.add(new Stop(point));
-        }
-        return _stops;
-    }
     public void setPointsEventListener(GraphicsOverlay graphicsOverlay){
         // Display point coords on click
         mapView.setOnMouseClicked(e -> {
@@ -212,7 +176,7 @@ public class MainController implements Initializable {
                                 //Display popup
 
                                 mapView.getCallout().setTitle(identifiedGraphic.getAttributes().get("id").toString());
-                                mapView.getCallout().setDetail(identifiedGraphic.getAttributes().get("title").toString() + "\n" + "Detalles");
+                                mapView.getCallout().setDetail(identifiedGraphic.getAttributes().get("title").toString() + "\n" + identifiedGraphic.getAttributes().get("name").toString());
 
                                 mapView.getCallout().showCalloutAt(identifiedGraphic, mapView.screenToLocation(point2D));
 

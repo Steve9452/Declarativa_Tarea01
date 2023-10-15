@@ -13,16 +13,10 @@ public class PrologController {
     private final String consult = "consult('src/main/java/com/example/tarea1declarativa/navigation.pl')";
     private final Query q1 = new Query(consult);
     List<Integer> stopsId;
-    private final HashMap<Integer, Intersection> intersections = new HashMap<>();
-
     private final List<IntersectionRaster.PointCord> points = new ArrayList<>();
 
     public List<Integer> getStopsId() {
         return stopsId;
-    }
-
-    public HashMap<Integer, Intersection> getIntersections() {
-        return intersections;
     }
 
 
@@ -40,7 +34,7 @@ public class PrologController {
 
         // route(1,4,Ruta).
         //String route = "route(1,4,Ruta).";
-        String route = "ruta_minima2("+from+","+to+",Ruta).";
+        String route = "rutaDesdeLugar("+from+","+to+",Ruta).";
         Query query = new Query(route);
 
         // Saving onSolution into list
@@ -61,10 +55,10 @@ public class PrologController {
 
         // using ruta_minima2() instead of ruta_minima()
         // =====
-        List<Integer> aux = new ArrayList<Integer>();
-        aux.add(from);
-        aux.addAll(stopsId);
-        stopsId = aux;
+//        List<Integer> aux = new ArrayList<Integer>();
+//        aux.add(from);
+//        aux.addAll(stopsId);
+//        stopsId = aux;
         // =====
     }
 
@@ -83,10 +77,6 @@ public class PrologController {
             IntersectionRaster.PointCord intersection = new IntersectionRaster.PointCord(id, lat, lng);
             points.add(intersection);
         });
-
-//        for (Map.Entry<Integer, Intersection> entry : intersections.entrySet()) {
-//            System.out.println(entry.getKey() + " " + entry.getValue().getLat() + " " + entry.getValue().getLon());
-//        }
     }
 
 }
