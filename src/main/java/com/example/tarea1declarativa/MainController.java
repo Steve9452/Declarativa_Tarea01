@@ -175,7 +175,7 @@ public class MainController implements Initializable {
 
                                 //Display popup
 
-                                mapView.getCallout().setTitle(identifiedGraphic.getAttributes().get("id").toString());
+
                                 mapView.getCallout().setDetail(identifiedGraphic.getAttributes().get("title").toString() + "\n" + identifiedGraphic.getAttributes().get("name").toString());
 
                                 mapView.getCallout().showCalloutAt(identifiedGraphic, mapView.screenToLocation(point2D));
@@ -243,7 +243,7 @@ public class MainController implements Initializable {
                         Route route = routeResult.getRoutes().get(0);
 
 
-                        SimpleLineSymbol routeSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, 0xFF800080, 5);
+                        SimpleLineSymbol routeSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, 0xfffb4f14, 5);
                         Graphic routeGraphic = new Graphic(route.getRouteGeometry(), routeSymbol);
                         //routeGraphic.setGeometry(route.getRouteGeometry());
                         routeGraphic.getAttributes().put("id", "Ruta");

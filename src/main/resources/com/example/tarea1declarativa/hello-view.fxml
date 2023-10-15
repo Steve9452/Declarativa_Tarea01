@@ -1,26 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.esri.arcgisruntime.mapping.view.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="730.0" prefWidth="959.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tarea1declarativa.MainController">
+<?import com.esri.arcgisruntime.mapping.view.MapView?>
+<VBox alignment="CENTER" prefHeight="887.0" prefWidth="1106.0" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tarea1declarativa.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <StackPane fx:id="stackPane" prefHeight="776.0" prefWidth="200.0">
         <MapView fx:id="mapView" prefHeight="776.0" prefWidth="200.0" />
     </StackPane>
-    <Pane prefHeight="200.0" prefWidth="741.0">
-        <Button fx:id="helloButton" disable="true" layoutY="2.0" onAction="#onHelloButtonClick" prefHeight="25.0" prefWidth="140.0" text="Navegar" />
-        <Button fx:id="clearButton" layoutX="182.0" layoutY="2.0" mnemonicParsing="false" onAction="#onClearButtonClick" prefHeight="25.0" prefWidth="140.0" text="Limpiar" />
+    <Pane prefHeight="393.0" prefWidth="1066.0">
+        <Button fx:id="helloButton" disable="true" layoutX="462.0" layoutY="170.0" onAction="#onHelloButtonClick" prefHeight="30.0" prefWidth="199.0" text="Navegar">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+        <Button layoutX="780.0" layoutY="170.0" mnemonicParsing="false" onAction="#onClearButtonClick" prefHeight="27.0" prefWidth="199.0" text="Limpiar">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
 
-        <Label fx:id="welcomeText" layoutX="384.0" layoutY="5.0" prefHeight="27.0" prefWidth="410.0" text="Selecciona dos puntos para calcular la ruta">
+        <Label fx:id="welcomeText" layoutX="501.0" layoutY="83.0" prefHeight="35.0" prefWidth="492.0" text="Selecciona dos puntos para calcular la ruta">
             <font>
-                <Font size="18.0" />
+                <Font size="24.0" />
             </font>
         </Label>
+      <Label layoutY="6.0" prefHeight="35.0" prefWidth="829.0" text="*Importante se requiere una conexión a internet para cargar la vista de mapa">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Label layoutX="22.0" layoutY="116.0" prefHeight="27.0" prefWidth="199.0" text="Ruta por lineas rectas">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="22.0" layoutY="158.0" prefHeight="17.0" prefWidth="140.0" text="Ruta optimizada">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Pane layoutX="209.0" layoutY="116.0" prefHeight="27.0" prefWidth="66.0" style="-fx-background-color: #AFFF9F" />
+        <Pane layoutX="209.0" layoutY="158.0" prefHeight="27.0" prefWidth="66.0" style="-fx-background-color: orange" />
+
     </Pane>
 </VBox>

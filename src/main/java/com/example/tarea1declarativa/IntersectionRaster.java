@@ -67,31 +67,6 @@ public class IntersectionRaster {
             //File file = new File(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource("coords.json")).getFile());
             //FileReader reader = new FileReader(file);
 
-//            { "type": "Feature", "properties": { "fid": 68, "nombre": "federacion salvadorena de futbol", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.238708492188607, 13.704264726677682 ] } },
-//            { "type": "Feature", "properties": { "fid": 69, "nombre": "Tipicos Marghot", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.234176537240529, 13.704504383133832 ] } },
-//            { "type": "Feature", "properties": { "fid": 70, "nombre": "Veterinaria ServiVet", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.230732945652363, 13.703138699352586 ] } },
-//            { "type": "Feature", "properties": { "fid": 71, "nombre": "Shopping Center", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.23286504699567, 13.706101283730865 ] } },
-//            { "type": "Feature", "properties": { "fid": 72, "nombre": "Embajada de alemania", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.234305135213845, 13.705933772114685 ] } },
-//            { "type": "Feature", "properties": { "fid": 73, "nombre": "Escuela Cristiana Maranatha", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.233452811780552, 13.706153459588066 ] } },
-//            { "type": "Feature", "properties": { "fid": 74, "nombre": "El Zocalo", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.228979563285449, 13.702117373611753 ] } },
-//            { "type": "Feature", "properties": { "fid": 75, "nombre": "UTEC", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.2265820412469, 13.704136833530622 ] } },
-//            { "type": "Feature", "properties": { "fid": 76, "nombre": "Centro de Cirujia Ambulatoria", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.230950923607296, 13.703736886082549 ] } },
-//            { "type": "Feature", "properties": { "fid": 77, "nombre": "Colegio Sagrado Corazon", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.237747768128898, 13.708967130984734 ] } },
-//            { "type": "Feature", "properties": { "fid": 78, "nombre": "Banco Agricola", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.241177355277188, 13.708827715628072 ] } },
-//            { "type": "Feature", "properties": { "fid": 79, "nombre": "Embajada de Honduras", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.242090558955667, 13.707526501642134 ] } },
-//            { "type": "Feature", "properties": { "fid": 80, "nombre": "Movistar Central", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.240217766649906, 13.70873899672165 ] } },
-//            { "type": "Feature", "properties": { "fid": 81, "nombre": "Asociacion Salvadorena de Ingenieros", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.232326527243771, 13.707485662558373 ] } },
-//            { "type": "Feature", "properties": { "fid": 82, "nombre": "Mosaico El Santo Papa", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.233589067567536, 13.70805740908485 ] } },
-//            { "type": "Feature", "properties": { "fid": 83, "nombre": "Oficinas Administrativas Fosalud", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.23209460249997, 13.706918139383706 ] } },
-//            { "type": "Feature", "properties": { "fid": 84, "nombre": "Pasteleria Bom Bom", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.231127766224432, 13.705980244481939 ] } },
-//            { "type": "Feature", "properties": { "fid": 85, "nombre": "Iglesia Manantial", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.231881521641611, 13.704287517779907 ] } },
-//            { "type": "Feature", "properties": { "fid": 86, "nombre": "DINAC", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.230614632728873, 13.704010089694696 ] } },
-//            { "type": "Feature", "properties": { "fid": 87, "nombre": "Academia Cristiana Internacional", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.229692731872476, 13.70385940526748 ] } },
-//            { "type": "Feature", "properties": { "fid": 88, "nombre": "Pasteleria Sweet", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.227989534535524, 13.703974883061468 ] } },
-//            { "type": "Feature", "properties": { "fid": 89, "nombre": "Galaxy Bowling", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.232830963561341, 13.703321446991358 ] } },
-//            { "type": "Feature", "properties": { "fid": 90, "nombre": "Unidad de Pensiones ISS", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.234842910713411, 13.703822790345336 ] } },
-//            { "type": "Feature", "properties": { "fid": 91, "nombre": "Gamero Ortodoncia", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.235808297459272, 13.703725619947379 ] } },
-//            { "type": "Feature", "properties": { "fid": 92, "nombre": "Super Selectos El Paseo", "tipo": "lugar" }, "geometry": { "type": "Point", "coordinates": [ -89.235415474924551, 13.702244118468538 ] } }
             Gson gson = new Gson();
             String json = "[\n" +
                     "{  \"id\": 1, \"latitude\": -89.224267304412422, \"longitude\" : 13.703150717800634   },\n" +
